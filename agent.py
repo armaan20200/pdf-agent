@@ -158,13 +158,13 @@ class PDFAgent:
         # ORGANIZE
         if re.search(r'\b(merge|combine|join)\b', msg):
             return "merge"
-        if re.search(r'\bsplit\b.*\bpdf\b|\bpdf\b.*\bsplit\b|\bseparate\s+pages\b', msg):
+        if re.search(r'\bsplit\b.*\bpdf\b|\bpdf\b.*\bsplit\b|\bseparate\s+pages\b|\bsplit\s+(into|at|the|pdf)\b', msg):
             return "split"
-        if re.search(r'\b(remove|delete)\s+(pages?|page)\b', msg):
+        if re.search(r'\b(remove|delete)\b.{0,30}\b(pages?|page)\b|\bremove\s+page\b', msg):
             return "remove_pages"
-        if re.search(r'\b(extract|pull out|get)\s+(pages?|page)\b', msg):
+        if re.search(r'\b(extract|pull out|get)\b.{0,30}\b(pages?|page)\b|\bextract\s+(first|last|all)\b', msg):
             return "extract"
-        if re.search(r'\b(reorder|reorganize|organize)\s+pages?\b', msg):
+        if re.search(r'\b(reorder|reorganize|organize|reverse)\s+.{0,20}\b(pages?|order)\b|\bmove\s+the\s+(first|last|page)\b|\breverse\s+(page|order)\b', msg):
             return "organize"
         if re.search(r'\brotate\b', msg):
             return "rotate"
@@ -206,7 +206,12 @@ class PDFAgent:
             return "repair"
 
         # SECURITY
-        if re.search(r'\bsign\b.*\b(pdf|document|file)\b|\bsignature\b', msg):
+        if re.search(
+            r'\bsign\b.*\b(pdf|document|file|page|pages|bottom|top|center|last|first|all)\b'
+            r'|\bsignature\b|\bplace\s+(a\s+)?sign|\badd\s+(a\s+)?sign'
+            r'|\bsign\s+(at|on|the|all|both)\b',
+            msg,
+        ):
             return "sign"
         if re.search(r'\bunlock\b|\bremove\s+password\b|\bdecrypt\b', msg):
             return "unlock"
